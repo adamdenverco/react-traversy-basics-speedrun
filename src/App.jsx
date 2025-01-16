@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+// import { useState } from "react";
+// import reactLogo from "./assets/react.svg";
 
-function App() {
-  const [count, setCount] = useState(0)
+import {
+    Route,
+    createBrowserRouter,
+    createRoutesFromElements,
+    RouterProvider,
+} from "react-router-dom";
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+import MainLayout from "./layout/MainLayout";
+// import NavBar from "./components/NavBar";
 
-export default App
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import JobsPage from "./pages/JobsPage";
+import JobPage from "./pages/JobPage";
+import AddJobPage from "./pages/AddJobPage";
+import EditJobPage from "./pages/EditJobPage";
+import NotFoundPage from "./pages/NotFoundPage";
+
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <Route path="/" element={<MainLayout />}>
+            <Route index element={<HomePage isHome="yes" />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/jobs" element={<JobsPage />} />
+            <Route path="/jobs/:id" element={<JobPage />} />
+            <Route path="/edit/job/:id" element={<EditJobPage />} />
+            <Route path="/add-job" element={<AddJobPage />} />
+            <Route path="/*" element={<NotFoundPage />} />
+        </Route>
+    )
+);
+
+const App = () => {
+    return <RouterProvider router={router} />;
+};
+
+// const App = () => {
+//     return (
+//         <>
+//             <MainLayout>
+//                 <Hero />
+//                 <Feature />
+//                 <JobListings />
+//                 <ViewAllJobs />
+//             </MainLayout>
+//         </>
+//     );
+// };
+
+export default App;
