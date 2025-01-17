@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Toastify } from "toastify";
+import { toast } from "react-toastify";
 
 const AddJobPage = ({ addJobSubmit }) => {
     const [type, setType] = useState("Full-Time");
@@ -13,7 +13,7 @@ const AddJobPage = ({ addJobSubmit }) => {
     const [companyDescription, setCompanyDescription] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactPhone, setContactPhone] = useState("");
-    // const navigate = Navigate();
+    const navigate = useNavigate();
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -32,9 +32,8 @@ const AddJobPage = ({ addJobSubmit }) => {
         };
         console.log(jobData);
         addJobSubmit(jobData);
-        // submit data
-        // toastify
-        // navigate("/jobs");
+        toast.success("You added a new job!");
+        navigate("/jobs");
     };
 
     return (
@@ -231,7 +230,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                                 placeholder="Optional phone for applicants"
                                 value={contactPhone}
                                 onChange={(e) =>
-                                    setSetContactPhone(e.target.value)
+                                    setContactPhone(e.target.value)
                                 }
                             />
                         </div>

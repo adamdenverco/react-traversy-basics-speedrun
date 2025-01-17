@@ -6,6 +6,8 @@ import {
     RouterProvider,
 } from "react-router";
 
+// Tutorial: https://www.youtube.com/watch?v=LDB4uaJ87e0
+
 import MainLayout from "./layout/MainLayout";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -29,13 +31,28 @@ const addJobSubmit = async (jobData) => {
         });
         isSuccess = true;
     } catch (error) {
-        console.log(error);
+        console.log("error", error);
     }
     return isSuccess;
 };
 
 const updateJobSubmit = async (jobData) => {
-    console.log("jobData", jobData);
+    console.log("job data", jobData);
+    const isSuccess = false;
+    try {
+        const result = await fetch(`/api/jobs/${jobData.id}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(jobData),
+        });
+        isSuccess = true;
+    } catch (error) {
+        console.log("error", error);
+    }
+    return isSuccess;
 };
 
 const deleteJobSubmit = async (jobId) => {
@@ -47,7 +64,7 @@ const deleteJobSubmit = async (jobId) => {
         });
         isSuccess = true;
     } catch (error) {
-        console.log(error);
+        console.log("error", error);
     }
     return isSuccess;
 };
@@ -65,10 +82,13 @@ const router = createBrowserRouter(
             />
             <Route
                 path="/edit/job/:id"
-                element={<EditJobPage />}
+                element={<EditJobPage updateJobSubmit={updateJobSubmit} />}
                 loader={jobLoader}
             />
-            <Route path="/add-job" element={<AddJobPage />} />
+            <Route
+                path="/add-job"
+                element={<AddJobPage addJobSubmit={addJobSubmit} />}
+            />
             <Route path="/*" element={<NotFoundPage />} />
         </Route>
     )

@@ -1,12 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate, useParams, useLoaderData } from "react-router";
-import { Toastify } from "toastify";
+import { toast } from "react-toastify";
 
 const EditJobPage = ({ updateJobSubmit }) => {
     const params = useParams();
     const id = params.id ?? "no id";
-    // const job = data.jobs.slice(1);
     const job = useLoaderData();
 
     const [type, setType] = useState(job.type);
@@ -14,13 +13,13 @@ const EditJobPage = ({ updateJobSubmit }) => {
     const [description, setDescription] = useState(job.description);
     const [salary, setSalary] = useState(job.salary);
     const [location, setLocation] = useState(job.location);
-    const [companyName, setCompany] = useState(job.company.name);
+    const [companyName, setCompanyName] = useState(job.company.name);
     const [companyDescription, setCompanyDescription] = useState(
         job.company.description
     );
     const [contactEmail, setContactEmail] = useState(job.company.contactEmail);
     const [contactPhone, setContactPhone] = useState(job.company.contactPhone);
-    // const navigate = Navigate();
+    const navigate = useNavigate();
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -39,9 +38,9 @@ const EditJobPage = ({ updateJobSubmit }) => {
             },
         };
         console.log(jobData);
-        updateJobSubmit(JobData);
-        // toastify
-        // navigate("/jobs/");
+        updateJobSubmit(jobData);
+        toast.success("You updated a job!");
+        navigate("/jobs");
     };
 
     return (
@@ -238,7 +237,7 @@ const EditJobPage = ({ updateJobSubmit }) => {
                                 placeholder="Optional phone for applicants"
                                 value={contactPhone}
                                 onChange={(e) =>
-                                    setSetContactPhone(e.target.value)
+                                    setContactPhone(e.target.value)
                                 }
                             />
                         </div>
