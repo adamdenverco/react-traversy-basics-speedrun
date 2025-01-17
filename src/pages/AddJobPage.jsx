@@ -1,15 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Toastify } from "toastify";
 
-const AddJobPage = () => {
-    const [type, setType] = useState("");
+const AddJobPage = ({ addJobSubmit }) => {
+    const [type, setType] = useState("Full-Time");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [salary, setSalary] = useState("");
+    const [salary, setSalary] = useState("Under $50K");
     const [location, setLocation] = useState("");
-    const [company, setCompany] = useState("");
+    const [companyName, setCompanyName] = useState("");
     const [companyDescription, setCompanyDescription] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactPhone, setContactPhone] = useState("");
@@ -17,19 +17,21 @@ const AddJobPage = () => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        const job = {
+        const jobData = {
             type,
             title,
             description,
             salary,
             location,
             company: {
-                name: company,
+                name: companyName,
                 description: companyDescription,
                 contactEmail,
                 contactPhone,
             },
         };
+        console.log(jobData);
+        addJobSubmit(jobData);
         // submit data
         // toastify
         // navigate("/jobs");
@@ -39,7 +41,7 @@ const AddJobPage = () => {
         <section className="bg-indigo-50">
             <div className="container m-auto max-w-2xl py-24">
                 <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
-                    <form action={submitForm}>
+                    <form onSubmit={submitForm}>
                         <h2 className="text-3xl text-center font-semibold mb-6">
                             Add Job
                         </h2>
@@ -169,8 +171,8 @@ const AddJobPage = () => {
                                 name="company"
                                 className="border rounded w-full py-2 px-3"
                                 placeholder="Company Name"
-                                value={company}
-                                onChange={(e) => setCompany(e.target.value)}
+                                value={companyName}
+                                onChange={(e) => setCompanyName(e.target.value)}
                             />
                         </div>
 

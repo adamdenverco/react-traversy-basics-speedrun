@@ -1,11 +1,46 @@
 import React from "react";
-import { Link, useParams } from "react-router";
-import data from "./../../jobs.json";
+import { Link, useParams, useLoaderData, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+
+// import data from "./../../jobs.json";
+
+const jobLoader = async ({ params }) => {
+    // try {
+    //     const response = await fetch(`/api/jobs/${params.id}`);
+    //     if (!response.ok) {
+    //         throw new Error("Job not found");
+    //     }
+    //     return await response.json();
+    // } catch (error) {
+    //     console.error("Error loading job:", error);
+    //     return null;
+    // }
+    const result = await fetch(`/api/jobs/${params.id}`);
+    const data = await result.json();
+    return data;
+};
 
 const JobPage = () => {
     const params = useParams();
     const id = params.id ?? "no id";
-    const job = data.jobs.slice(1);
+    // const job = data.jobs.slice(1);
+    const job = useLoaderData();
+    const navigate = useNavigate();
+
+    const onDeleteClick = (jobId) => {
+        const confirm = window.confirm(
+            "Are you sure you want to delete this job?"
+        );
+        if (!confirm) {
+            return;
+        }
+        if (deleteJobSubmit(jobId)) {
+            toast.success(`You deleted "${job.title} (${job.id}"`);
+            navigate("/jobs");
+        } else {
+            toast.error("Sorry, we were unable to delete this job post.");
+        }
+    };
 
     return (
         <>
@@ -63,16 +98,10 @@ const JobPage = () => {
                                     Company Info
                                 </h3>
 
-                                <h2 className="text-2xl">NewTek Solutions</h2>
+                                <h2 className="text-2xl">{job.company.name}</h2>
 
                                 <p className="my-2">
-                                    NewTek Solutions is a leading technology
-                                    company specializing in web development and
-                                    digital solutions. We pride ourselves on
-                                    delivering high-quality products and
-                                    services to our clients while fostering a
-                                    collaborative and innovative work
-                                    environment.
+                                    {job.company.description}
                                 </p>
 
                                 <hr className="my-4" />
@@ -80,13 +109,13 @@ const JobPage = () => {
                                 <h3 className="text-xl">Contact Email:</h3>
 
                                 <p className="my-2 bg-indigo-100 p-2 font-bold">
-                                    contact@newteksolutions.com
+                                    {job.company.contactEmail}
                                 </p>
 
                                 <h3 className="text-xl">Contact Phone:</h3>
 
                                 <p className="my-2 bg-indigo-100 p-2 font-bold">
-                                    555-555-5555
+                                    {job.company.contactPhone}
                                 </p>
                             </div>
 
@@ -96,12 +125,17 @@ const JobPage = () => {
                                     Manage Job
                                 </h3>
                                 <Link
-                                    to="/add-job"
+                                    to={`/edit/job/${job.id}`}
                                     className="bg-indigo-500 hover:bg-indigo-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
                                 >
                                     Edit Job
                                 </Link>
-                                <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block">
+                                <button
+                                    onClick={() => {
+                                        onDeleteClick(job.id);
+                                    }}
+                                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
+                                >
                                     Delete Job
                                 </button>
                             </div>
@@ -113,4 +147,4 @@ const JobPage = () => {
     );
 };
 
-export default JobPage;
+export { JobPage as default, jobLoader };
