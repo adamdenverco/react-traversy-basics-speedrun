@@ -8,7 +8,7 @@ const navOptions = [
     { id: 3, name: "Jobs", url: "/jobs" },
     { id: 4, name: "Add Job", url: "/add-job" },
 ];
-console.log(navOptions);
+// console.log(navOptions);
 
 const defaultCss =
     "text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2";

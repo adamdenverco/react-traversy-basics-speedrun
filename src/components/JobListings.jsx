@@ -1,5 +1,5 @@
 import React from "react";
-import data from "./../assets/jobs.json";
+import data from "./../../jobs.json";
 import JobListing from "./JobListing";
 
 const JobListings = ({ isHome = false }) => {
